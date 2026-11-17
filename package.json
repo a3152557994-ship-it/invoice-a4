@@ -1,0 +1,12 @@
+{
+  "name": "invoice-a4",
+  "version": "1.0.0",
+  "description": "Zero-Login Offline Electronic Invoice Exact-Number Deduplication Ledger & Standard A4 300DPI 2-Up Reimbursement Print Tool.",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "sync:docs": "cp src/invoice-engine.mjs docs/invoice-engine.js",
+    "test": "node --test tests/invoice-a4.test.mjs"
+  }
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice-A4 免登录电子发票精准查重台账 &amp; A4 一页两张省纸报销拼版工具</title>
+  <meta name="description" content="免登录、零上传云端：支持 8/20 位全电发票唯一号码精准去重（同金额不同单号绝不误杀！），一键导出财务报销 Excel/CSV 台账与标准 A4 300DPI 上下两联虚线裁切打印版。单页拼版免费，Pro ¥18 永久买断。">
+  <link rel="canonical" href="https://a3152557994-ship-it.github.io/invoice-a4/">
+  <link rel="stylesheet" href="./style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Invoice-A4 Offline E-Invoice Deduplicator & 2-Up A4 Print Layout",
+    "operatingSystem": "macOS, iOS, iPadOS, Windows",
+    "applicationCategory": "FinanceApplication",
+    "description": "Zero-login local electronic invoice exact-number deduplication ledger and 300DPI A4 two-up reimbursement print sheet generator.",
+    "offers": {
+      "@type": "Offer",
+      "price": "18.00",
+      "priceCurrency": "CNY"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="logo-box">票A4</span>
+        <div>
+          <span class="brand-title">Invoice-A4 电子发票查重与一页两联拼版</span>
+          <span class="brand-sub">免登录 · 零上传隐私版 · 20位全电票精准去重 · 300DPI 财务级省纸排版</span>
+        </div>
+      </div>
+      <div class="top-links">
+        <a href="#a4PreviewSection" class="btn-secondary btn-sm">A4 两联打印预览</a>
+        <a href="#proSection" class="pro-badge">单页免费 · Pro ¥18 永久买断</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="hero-pill">直击财务痛点：同金额打车票绝不误判重复 · 导 1 页绝不锁会员 · 不绑手机号零上传</span>
+      <h1>拖入发票秒级按「唯一票号」查重，<br>自动排好标准 A4 上下两联（带裁切虚线 + 报销汇总条）</h1>
+      <p class="hero-desc">
+        针对某竞品「把连续两天 ¥38 打车票误杀成重复」「导 1 张也逼开会员」痛点重构：严格按 8/20 位发票唯一号码核验，单张 A4（上下两联共 2 张票）高清导出永久免费！
+      </p>
+    </section>
+
+    <!-- STEP 1: INPUT & SAMPLE BAR -->
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <span class="eyebrow">STEP 1 · 批量导入或一键实测样张</span>
+          <h2>导入电子发票图片 / XML / 文本元数据（100% 浏览器本地解析）</h2>
+        </div>
+        <div class="head-actions">
+          <button id="load4SamplesBtn" class="btn-primary" type="button">⚡ 一键加载 4 张仿真发票（测同额放行 + 真重拦截）</button>
+          <button id="clearAllBtn" class="btn-ghost btn-sm" type="button">清空列表</button>
+        </div>
+      </div>
+
+      <div class="import-grid">
+        <label class="dropzone" id="dropzone">
+          <input id="invoiceFilesInput" type="file" accept="image/*,.xml,.txt,.pdf" multiple hidden>
+          <div class="drop-title">📥 点击选择或批量拖入电子发票图片 / XML / 文本文件</div>
+          <div class="drop-sub">支持数电票 20 位号码与传统 8 位发票号码；文件名含票号/金额可自动识别，也可在下方台账直接微调</div>
+        </label>
+
+        <div class="paste-box">
+          <textarea id="pasteMetaInput" rows="4" placeholder="也可直接粘贴电子发票复制出的文字（支持一次粘贴多张，用空行分隔）：&#10;发票号码：26312000000108523911&#10;开票日期：2026年11月10日  价税合计（小写）¥38.00"></textarea>
+          <button id="parsePasteBtn" class="btn-secondary btn-sm" type="button">➕ 解析文本并加入台账</button>
+        </div>
+      </div>
+
+      <div class="meta-bar">
+        <div>
+          <label for="claimantInput">报销人姓名（印于页脚汇总条）</label>
+          <input id="claimantInput" type="text" value="林知远">
+        </div>
+        <div>
+          <label for="deptInput">所属部门 / 项目组</label>
+          <input id="deptInput" type="text" value="产品研发部">
+        </div>
+        <div class="kpi-strip" id="kpiStrip"></div>
+      </div>
+    </section>
+
+    <!-- STEP 2: EXACT DEDUPLICATION LEDGER -->
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <span class="eyebrow">STEP 2 · 按 8/20 位唯一发票号码精准查重台账</span>
+          <h2>报销查重明细表（同金额异单号自动放行 · 真重复单号红色拦截剔除）</h2>
+        </div>
+        <button id="exportCsvBtn" class="btn-dark" type="button">🔒 导出财务报销 Excel/CSV 汇总台账 (Pro ¥18)</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>查重状态</th>
+              <th>发票唯一号码 (可编辑)</th>
+              <th>开票日期</th>
+              <th>费用类别</th>
+              <th>销售方 / 项目明细</th>
+              <th>税额</th>
+              <th>价税合计 (元)</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="ledgerTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STEP 3: A4 300DPI 2-UP PRINT LAYOUT -->
+    <section id="a4PreviewSection" class="card">
+      <div class="card-head">
+        <div>
+          <span class="eyebrow">STEP 3 · 标准 A4 (2480×3508 · 300DPI) 上下两联省纸拼版</span>
+          <h2>A4 一页两张打印预览（含中间裁切虚线 &amp; 页脚报销人汇总条）</h2>
+        </div>
+        <div class="page-switcher" id="a4PageSwitcher"></div>
+      </div>
+
+      <div class="a4-stage">
+        <canvas id="a4PreviewCanvas" width="1240" height="1754"></canvas>
+      </div>
+
+      <div class="export-actions">
+        <button id="downloadPage1FreeBtn" class="btn-primary btn-lg" type="button">⬇️ 免费下载第 1 页 A4 两联 300DPI 高清图 (PNG)</button>
+        <button id="printPage1FreeBtn" class="btn-secondary btn-lg" type="button">🖨️ 免登录直接打印第 1 页 A4</button>
+        <button id="exportAllPdfProBtn" class="btn-accent btn-lg" type="button">🔒 批量导出全部多页 A4 300DPI 拼版 PDF (Pro ¥18)</button>
+      </div>
+    </section>
+
+    <!-- STEP 4: PRO UNLOCK -->
+    <section id="proSection" class="card pro-card">
+      <div class="pro-grid">
+        <div>
+          <span class="eyebrow">ONE-TIME BUYOUT · 财务报销终身省心</span>
+          <h2>Invoice-A4 Pro 完整版：<span class="price-em">¥18 永久买断</span></h2>
+          <p class="pro-sub">单页 A4（拼 2 张发票）永久免费且无强制登录；月度/差旅多张发票汇总报销，仅需 ¥18 一次买断终身无限用：</p>
+          <ul class="pro-perks">
+            <li>✅ <strong>无限张数电子发票批量查重 + 一键导出防科学计数法 Excel/CSV 财务报销台账</strong></li>
+            <li>✅ <strong>一键离线生成多页 300DPI 标准 A4 上下两联拼版 PDF</strong>（20 张发票秒压成 10 页清晰 A4）</li>
+            <li>✅ <strong>纯离线 Ed25519 公钥验签激活</strong>：发票金额与抬头绝不出本机浏览器</li>
+          </ul>
+          <div class="mail-order">
+            <p>📬 下单获取永久激活码（邮件注明 <strong><code>invoice-a4</code></strong>，¥18 买断）：</p>
+            <div class="mail-links">
+              <a href="mailto:3152557994@qq.com?subject=Purchase%20invoice-a4%20Pro%20(%C2%A518)&body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E8%B4%AD%E4%B9%B0%20invoice-a4%20Pro%20%E6%B0%B8%E4%B9%85%E6%BF%80%E6%B4%BB%E7%A0%81%EF%BC%88%C2%A518%E4%B9%B0%E6%96%AD%EF%BC%89%E3%80%82">📧 3152557994@qq.com</a>
+              <a href="mailto:a3152557994@gmail.com?subject=Purchase%20invoice-a4%20Pro%20(%C2%A518)&body=Hello%2C%20I%20would%20like%20to%20buy%20an%20invoice-a4%20Pro%20lifetime%20license%20(%C2%A518).">📧 a3152557994@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="license-panel">
+          <div class="lic-head">
+            <span id="proDot" class="lic-dot"></span>
+            <strong id="proStateLabel">当前：免费版（第 1 页 A4 两联高清导出永久免费）</strong>
+          </div>
+          <label for="licenseCodeInput">OPC1. 离线激活码</label>
+          <div class="lic-row">
+            <input id="licenseCodeInput" type="text" placeholder="OPC1.eyJ2IjoxLCJwIjoiaW52b2ljZS1hNCIs..." autocomplete="off">
+            <button id="verifyBtn" class="btn-primary" type="button">验证激活</button>
+          </div>
+          <p id="verifyHint" class="small-note">公钥：MCowBQYDK2VwAyEAP5NCVP7C...SXys=</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Invoice-A4 电子发票查重与省纸拼版工具 · 100% 本地浏览器运行，零服务器上传，守护企业与个人财务隐私。</p>
+      <p>联系邮箱：<a href="mailto:3152557994@qq.com">3152557994@qq.com</a> / <a href="mailto:a3152557994@gmail.com">a3152557994@gmail.com</a> · <a href="./llms.txt">llms.txt</a></p>
+    </div>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

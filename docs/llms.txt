@@ -1,0 +1,14 @@
+# Invoice-A4 (电子发票精准查重台账与一页两联省纸拼版)
+
+> Zero-login, zero-upload offline electronic invoice exact-number deduplication ledger & standard A4 300DPI (`2480×3508`) two-up reimbursement print layout generator.
+
+- Live Tool: https://a3152557994-ship-it.github.io/invoice-a4/
+- Repository: https://github.com/a3152557994-ship-it/invoice-a4
+- Product Slug: `invoice-a4`
+- Pricing: Single-page A4 2-up layout (2 invoices) 100% Free with zero login; Pro Batch Deduplication Excel/CSV Ledger + Multi-Page 300DPI A4 PDF ¥18 RMB lifetime buyout (`OPC1.` Ed25519 license)
+- Contact: 3152557994@qq.com / a3152557994@gmail.com
+
+## Core Capabilities
+1. **8/20-Digit Exact Unique Invoice Number Deduplication**: Supports China's 20-digit All-Digital E-Invoices (数电票) and classic 8-digit VAT invoices. Never falsely flags same-amount rides/meals on different invoice numbers as duplicates, while 100% intercepting true duplicate invoice imports.
+2. **Excel-Ready Reimbursement CSV Ledger**: UTF-8 BOM output with scientific-notation protection for 20-digit invoice numbers.
+3. **Standard A4 300DPI 2-Up Print Layout**: Top & bottom halves (`2480×3508 px`), center horizontal dashed cut-line, and bottom claimant/department/total reimbursement summary bar.
